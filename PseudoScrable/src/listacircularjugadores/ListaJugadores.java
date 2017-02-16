@@ -5,6 +5,12 @@
  */
 package listacircularjugadores;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author estre
@@ -22,9 +28,6 @@ public class ListaJugadores {
     public boolean esVacia(){
         return inicio == null;
     }
-     public int getTamanio(){
-        return tamanio;
-    }
      
     public void agregarAlFinal(String nombre){
         // Define un nuevo nodo.
@@ -40,14 +43,14 @@ public class ListaJugadores {
                 ultimo = nuevo;
                 // Y el puntero del ultimo debe apuntar al primero.
                 //ultimo.setSiguiente(inicio);
-                ultimo.siguiente = inicio;
+                ultimo.nodoDer = inicio;
             // Caso contrario el nodo se agrega al final de la lista.
             } else{
                 // Apuntamos con el ultimo nodo de la lista al nuevo.
-                ultimo.siguiente= nuevo;
+                ultimo.nodoDer= nuevo;
                 //ultimo.setSiguiente(nuevo);
                 // Apuntamos con el nuevo nodo al inicio de la lista.
-                nuevo.siguiente= inicio;
+                nuevo.nodoDer= inicio;
                 //nuevo.setSiguiente(inicio);
                 // Como ahora como el nuevo nodo es el ultimo se actualiza
                 // la variable ultimo.
@@ -55,6 +58,8 @@ public class ListaJugadores {
             }
             // Incrementa el contador de tamaño de la lista
             tamanio++;
+        }else{
+            JOptionPane.showMessageDialog(null, "El jugador ya existe, ingrese otro nombre");
         }
     }
     public boolean buscar(String referencia){
@@ -73,7 +78,7 @@ public class ListaJugadores {
                 }
                 else{
                     // Avansa al siguiente. nodo.
-                    aux = aux.siguiente;
+                    aux = aux.nodoDer;
                 }
             }while(aux != inicio && encontrado != true);
         }
@@ -93,13 +98,84 @@ public class ListaJugadores {
                 // Imprime en pantalla el valor del nodo.
                 System.out.print(i + ".[ " + aux.nombre + " ]" + " ->  ");
                 // Avanza al siguiente nodo.
-                aux = aux.siguiente;
+                aux = aux.nodoDer;
                 // Incrementa el contador de la posión.
                 i++;
             }while(aux != inicio);
         }
     }
     
+    public void generarGrafoTxt(){
+           if (!esVacia()) {
+            // Crea una copia de la lista.
+            NodoJugador aux = inicio;
+            // Posicion de los elementos de la lista.
+            int i = 0;
+            String str ="\n";
+           
+            // Recorre la lista hasta llegar nuevamente al incio de la lista.
+            do{
+                // Imprime en pantalla el valor del nodo.
+                str = str  + aux.nombre +  " ->  ";
+                // Avanza al siguiente nodo.
+                aux = aux.nodoDer;
+                // Incrementa el contador de la posión.
+                i++;
+            }while(aux != inicio);
+            if(aux==inicio){
+                str = str  + aux.nombre +  " ;  ";
+            }
+            System.out.print("Inicio" + str +"fin ");
+            GenerarImagen(str);
+        }
+        
+    }
+     public void GenerarImagen(String nodos){
+         String rutaArchivo;
+         String rutaImagen;
+         String texto= "digraph G{ \n " +nodos+"  \n }  " ;
+            rutaArchivo = "grafoJugadores.dot";
+            rutaImagen = "grafoJugadores.png";
+         
+         try {
+        File archivo = new File(rutaArchivo);
+        BufferedWriter bw;
+        bw = new BufferedWriter(new FileWriter(archivo));
+        bw.write(texto); 
+        bw.close();
+            dibujar(rutaArchivo, rutaImagen,1);
+         
+        } catch (IOException ex) {
+                 System.out.println("Error>> "+ex.getMessage());
+             }
+        
+        
+    }
+    
+    public void dibujar( String direccionDot, String direccionPng ,int opcion){
+            try
+            {       
+                File archivo = new File(direccionPng);
+                ProcessBuilder pbuilder;
+                
+                if (opcion==1){
+                    pbuilder = new ProcessBuilder( "dot", "-Tpng", "-o", direccionPng, direccionDot );
+                
+                }else{
+                     pbuilder = new ProcessBuilder( "dot","-Kfdp","-n","-Tpng", "-o", direccionPng, direccionDot );             
+                }
+                
+                pbuilder.redirectErrorStream( true );
+                //Ejecuta el proceso
+                pbuilder.start();
+                System.out.println("\nGrafica  creada con exito");
+                //String[] command = {"cmd","/c","start","Visualizador de fotos de Windows",  archivo.getAbsolutePath() };
+                //Process process = Runtime.getRuntime().exec(command);
+               
+            } catch (Exception e) {
+                e.printStackTrace(); 
+            }
+	}
     
     
     

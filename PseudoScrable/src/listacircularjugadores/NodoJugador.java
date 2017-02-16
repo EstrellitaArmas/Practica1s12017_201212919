@@ -13,13 +13,13 @@ import listasimplemano.NodoMano;
  * @author estre
  */
 public class NodoJugador {
-    NodoJugador siguiente;
+    NodoJugador nodoDer;
     String nombre;
     NodoMano manoJuego;
     
     public NodoJugador(String nombre){
         this.nombre= nombre;
-        this.siguiente= null;
+        this.nodoDer= null;
         this.manoJuego= null;
     }
     

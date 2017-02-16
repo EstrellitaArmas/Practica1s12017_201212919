@@ -6,6 +6,7 @@
 package pseudoscrable;
 
 import listacircularjugadores.ListaJugadores;
+import listasimplediccionario.ListaPalabras;
 
 /**
  *
@@ -14,11 +15,13 @@ import listacircularjugadores.ListaJugadores;
 public class DiseñoInicio2 extends javax.swing.JFrame {
     
     ListaJugadores  listaJugadores = new ListaJugadores();
+   
+   
 
     public DiseñoInicio2() {
         initComponents();
     }
-
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -27,6 +30,7 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
         txtJugador = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         jLabel1.setText("INGRESE JUGADORES");
 
@@ -43,6 +47,8 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
 
         jLabel2.setText("INGRESE JUGADORES");
 
+        jButton2.setText("jButton2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -57,7 +63,10 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(72, 72, 72)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jButton2)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -69,7 +78,9 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
                 .addComponent(txtJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
 
         pack();
@@ -78,7 +89,6 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         listaJugadores.agregarAlFinal(txtJugador.getText());
         listaJugadores.listar();
-        
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -119,6 +129,7 @@ public class DiseñoInicio2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtJugador;

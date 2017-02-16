@@ -5,6 +5,10 @@
  */
 package listasimplediccionario;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -84,7 +88,75 @@ public class ListaPalabras {
                 str = str + temp.palabra + "\n";
                 temp = temp.nodoDer;
             }
-            JOptionPane.showMessageDialog(null, str);
+            System.out.println(str);
+            //JOptionPane.showMessageDialog(null, str);
         }
     }
+    
+    public void generarGrafoTxt(){
+           if(tamano != 0) {
+            NodoPalabra temp = primero;
+            String str = "";
+            for(int i = 0; i < this.tamano; i++) {
+                //node1 -> node2
+                if(temp.nodoDer != null){
+                   
+                   str = str + temp.palabra + "->"; 
+                }else{
+                    str = str + temp.palabra + ";\n"; 
+                }
+                
+                temp = temp.nodoDer;
+            }
+            System.out.println(str); 
+            GenerarImagen(str);
+        }
+        
+    }
+     public void GenerarImagen(String nodos){
+         String rutaArchivo;
+         String rutaImagen;
+         String texto= "digraph G{ \n " +nodos+"  \n }  " ;
+            rutaArchivo = "grafoPalabras.dot";
+            rutaImagen = "grafoPalabras.png";
+         
+         try {
+        File archivo = new File(rutaArchivo);
+        BufferedWriter bw;
+        bw = new BufferedWriter(new FileWriter(archivo));
+        bw.write(texto); 
+        bw.close();
+            dibujar(rutaArchivo, rutaImagen,1);
+         
+        } catch (IOException ex) {
+                 System.out.println("Error>> "+ex.getMessage());
+             }
+        
+        
+    }
+    
+    public void dibujar( String direccionDot, String direccionPng ,int opcion){
+            try
+            {       
+                File archivo = new File(direccionPng);
+                ProcessBuilder pbuilder;
+                
+                if (opcion==1){
+                    pbuilder = new ProcessBuilder( "dot", "-Tpng", "-o", direccionPng, direccionDot );
+                
+                }else{
+                     pbuilder = new ProcessBuilder( "dot","-Kfdp","-n","-Tpng", "-o", direccionPng, direccionDot );             
+                }
+                
+                pbuilder.redirectErrorStream( true );
+                //Ejecuta el proceso
+                pbuilder.start();
+                System.out.println("\nGrafica  creada con exito");
+                //String[] command = {"cmd","/c","start","Visualizador de fotos de Windows",  archivo.getAbsolutePath() };
+                //Process process = Runtime.getRuntime().exec(command);
+               
+            } catch (Exception e) {
+                e.printStackTrace(); 
+            }
+	}
 }

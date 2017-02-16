@@ -40,12 +40,12 @@ public class DiseñoInicio extends javax.swing.JFrame {
             FileOutputStream salida;
             File archivo ; 
             
+            DiseñoInicio2 diseñoInicio2= new DiseñoInicio2();  
             ListaPalabras listaPalabras = new ListaPalabras();      
-            
+            Tablero tablero;
                     
     public DiseñoInicio() {
         initComponents();
-        btnJugar.setEnabled(false);
     }
 
     /**
@@ -72,6 +72,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
         });
 
         btnJugar.setText("JUGAR");
+        btnJugar.setEnabled(false);
         btnJugar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJugarActionPerformed(evt);
@@ -161,13 +162,12 @@ public class DiseñoInicio extends javax.swing.JFrame {
                         for(int j = 0 ; j <palabrasList.getLength(); j++){
                             Node nNode =  palabrasList.item(j);
                             if (nNode.getNodeType()== Node.ELEMENT_NODE){  
-                                System.out.println(nNode.getTextContent()); 
+                                //System.out.println(nNode.getTextContent()); 
                                 listaPalabras.addLast(nNode.getTextContent());
                             }
                         } 
-                        
-                    System.out.println(salida);
-                    btnJugar.setEnabled(true);
+                        diseñoInicio2.setVisible(true);
+                        btnJugar.setEnabled(true);
                     } catch (IOException io) {
                     System.out.println(io.getMessage());
                     } catch (ParserConfigurationException ex) {
@@ -189,8 +189,9 @@ public class DiseñoInicio extends javax.swing.JFrame {
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         //listaPalabras.imprimir();
-        DiseñoInicio2 diseñoInicio2= new DiseñoInicio2();
-        diseñoInicio2.setVisible(true);
+         Tablero tablero = new Tablero (listaPalabras, diseñoInicio2.listaJugadores);
+         //diseñoInicio2.setVisible(false);
+         tablero.setVisible(true);
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**

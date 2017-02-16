@@ -1,0 +1,4 @@
+digraph G{ 
+ hola->mundo->como->estas->uno->dos->tres->universidad->practica->primera->correo->juego->sacrable;
+  
+ }  

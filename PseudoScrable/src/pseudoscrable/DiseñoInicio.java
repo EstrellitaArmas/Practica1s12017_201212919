@@ -40,10 +40,12 @@ public class DiseñoInicio extends javax.swing.JFrame {
             FileOutputStream salida;
             File archivo ; 
             
-            ListaPalabras listaPalabras = new ListaPalabras();        
+            ListaPalabras listaPalabras = new ListaPalabras();      
+            
                     
     public DiseñoInicio() {
         initComponents();
+        btnJugar.setEnabled(false);
     }
 
     /**
@@ -57,7 +59,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
 
         jFileChooser1 = new javax.swing.JFileChooser();
         btnAbrirArchivo = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnJugar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Diseño Uno"); // NOI18N
@@ -69,10 +71,10 @@ public class DiseñoInicio extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("JUGAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnJugar.setText("JUGAR");
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnJugarActionPerformed(evt);
             }
         });
 
@@ -84,7 +86,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
                 .addGap(51, 51, 51)
                 .addComponent(btnAbrirArchivo)
                 .addGap(84, 84, 84)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -93,7 +95,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAbrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -165,6 +167,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
                         } 
                         
                     System.out.println(salida);
+                    btnJugar.setEnabled(true);
                     } catch (IOException io) {
                     System.out.println(io.getMessage());
                     } catch (ParserConfigurationException ex) {
@@ -184,9 +187,11 @@ public class DiseñoInicio extends javax.swing.JFrame {
         }            // TODO add your handling code here:
     }//GEN-LAST:event_btnAbrirArchivoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        listaPalabras.imprimir();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        //listaPalabras.imprimir();
+        DiseñoInicio2 diseñoInicio2= new DiseñoInicio2();
+        diseñoInicio2.setVisible(true);
+    }//GEN-LAST:event_btnJugarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,7 +231,7 @@ public class DiseñoInicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbrirArchivo;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnJugar;
     private javax.swing.JFileChooser jFileChooser1;
     // End of variables declaration//GEN-END:variables
 

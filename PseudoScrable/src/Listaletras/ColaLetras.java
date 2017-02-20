@@ -3,24 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package listasimplediccionario;
+package Listaletras;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author estre
  */
-public class ListaPalabras {
-    private NodoPalabra primero;
-    private NodoPalabra ultimo;
+public class ColaLetras extends ArrayList{
+    private NodoLetra primero;
+    private NodoLetra ultimo;
     private int tamano;
-
-    public ListaPalabras() {
+    
+    public ColaLetras() {
         this.primero = null;
         this.ultimo = null;
         this.tamano = 0;
@@ -32,28 +33,28 @@ public class ListaPalabras {
     }
 
 //Metodo para agregar al final de la lista.
-    public ListaPalabras addLast(String palabra) {
+    public void addLast(String letra, int puntos) {
         if(siVacio()) {
-            NodoPalabra nuevo = new NodoPalabra(palabra);
+            NodoLetra nuevo = new NodoLetra(letra, puntos);
             primero = nuevo;
             ultimo = nuevo;
-            nuevo.nodoDer = nuevo;
+            nuevo.nodoDer = null;
         }
         else {
-            NodoPalabra nuevo = new NodoPalabra(palabra);
+            NodoLetra nuevo = new NodoLetra(letra, puntos);
             nuevo.nodoDer = null;
             ultimo.nodoDer = nuevo;
             ultimo = nuevo;
         }
         this.tamano++;
-        return this;
+        
     }
 
-//Metodo para borrar al final de la lista.
-    public NodoPalabra deleteLast() {
-        NodoPalabra eliminar = null;
+//Metodo para borrar al inicio de la lista.
+    public NodoLetra deleteFirst() {
+        NodoLetra eliminar = null;
         if(siVacio()) {
-            JOptionPane.showMessageDialog(null, "La lista se encuentra vacia");
+            JOptionPane.showMessageDialog(null, "Se acabaron las letras!!!");
             return null;
         }
         if(primero == ultimo) {
@@ -61,31 +62,40 @@ public class ListaPalabras {
             ultimo = null;
         }
         else {
-            NodoPalabra actual = primero;
-            while(actual.nodoDer != ultimo) {
-                actual = actual.nodoDer;
-            }
-            eliminar = actual.nodoDer;
-            actual.nodoDer = null;
-
-            ultimo = actual;
+            NodoLetra actual = primero;                
+            eliminar = actual;
+            primero=actual.nodoDer;            
         }
         this.tamano--;
         return eliminar;
     }
+ 
+ public int buscar(String referencia){      
+        int encontrado=0;              
+            NodoLetra aux=primero; 
+            while(aux!=null){
 
+                if(aux.letra.equals(referencia)){
+                    encontrado++;
+                }
+                //Actualizamos
+                aux=aux.nodoDer;
+            }        
+        // Retorna el resultado de la bandera.
+        return encontrado;
+    }
 //Metodo que imprime el tamaño de la lista.
-    public void tamano() {
-        JOptionPane.showMessageDialog(null, "El tamaño es:\n " + this.tamano);
+    public int tamano() {
+       return tamano;
     }
 
 //Metodo que imprime la lista y los valores ingresados.
     public void imprimir() {
         if(tamano != 0) {
-            NodoPalabra temp = primero;
+            NodoLetra temp = primero;
             String str = "";
             for(int i = 0; i < this.tamano; i++) {
-                str = str + temp.palabra + "\n";
+                str = str + temp.letra + "\n";
                 temp = temp.nodoDer;
             }
             System.out.println(str);
@@ -94,16 +104,23 @@ public class ListaPalabras {
     }
     
     public void generarGrafoTxt(){
-           if(tamano != 0) {
-            NodoPalabra temp = primero;
+        int contador=0;
+        if(tamano != 0) {
+            NodoLetra temp = primero;
             String str = "";
+            for(int i = 0; i < this.tamano; i++) { 
+                str = str + + (contador++) +"[label=\""+temp.letra +"\"];\n"; 
+                temp = temp.nodoDer;
+            }
+            contador = 0;
+            temp = primero;
             for(int i = 0; i < this.tamano; i++) {
                 //node1 -> node2
                 if(temp.nodoDer != null){
                    
-                   str = str + temp.palabra + "->"; 
+                   str = str + (contador++) + "-> "; 
                 }else{
-                    str = str + temp.palabra + "\n"; 
+                    str = str +(contador++)+ ";\n"; 
                 }
                 
                 temp = temp.nodoDer;
@@ -113,12 +130,12 @@ public class ListaPalabras {
         }
         
     }
-     public void GenerarImagen(String nodos){
+    public void GenerarImagen(String nodos){
          String rutaArchivo;
          String rutaImagen;
          String texto= "digraph G{ \n " +nodos+"  \n }  " ;
-            rutaArchivo = "grafoPalabras.dot";
-            rutaImagen = "grafoPalabras.png";
+            rutaArchivo = "grafoColaLetras.dot";
+            rutaImagen = "grafoColaLetras.png";
          
          try {
         File archivo = new File(rutaArchivo);
@@ -134,7 +151,6 @@ public class ListaPalabras {
         
         
     }
-    
     public void dibujar( String direccionDot, String direccionPng ,int opcion){
             try
             {       
@@ -159,4 +175,6 @@ public class ListaPalabras {
                 e.printStackTrace(); 
             }
 	}
+    
 }
+

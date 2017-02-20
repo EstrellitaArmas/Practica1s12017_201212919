@@ -5,6 +5,7 @@
  */
 package listacircularjugadores;
 
+import Listaletras.NodoLetra;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -28,12 +29,32 @@ public class ListaJugadores {
     public boolean esVacia(){
         return inicio == null;
     }
-     
+   
+    public NodoJugador buscarJugador(String referencia){
+          // Crea una copia de la lista.
+        NodoJugador aux = inicio;
+        // Recorre la lista hasta encontrar el elemento o hasta 
+        // llegar al primer nodo nuevamente.
+        if(!esVacia()){
+            do{
+                // Consulta si el valor del nodo es igual al de referencia.
+                if (referencia.equals(aux.nombre)){
+                    // Canbia el valor de la bandera.
+                    return aux;
+                }
+                else{
+                    // Avansa al siguiente. nodo.
+                    aux = aux.nodoDer;
+                }
+            }while(aux != inicio);
+        }
+        // Retorna el resultado de la bandera.
+        return null;
+    }
     public void agregarAlFinal(String nombre){
         // Define un nuevo nodo.
-        NodoJugador nuevo = new NodoJugador(nombre);
-        // Agrega al valor al nodo.
-        //nuevo.setValor(valor);
+        NodoJugador nuevo = new NodoJugador(nombre); 
+        
         // Consulta si la lista esta vacia.
         if(!buscar(nombre)){        
             if (esVacia()) {
@@ -85,7 +106,7 @@ public class ListaJugadores {
         // Retorna el resultado de la bandera.
         return encontrado;
     }
-    public void listar(){
+    public void listarJugadores(){
         // Verifica si la lista contiene elementoa.
         if (!esVacia()) {
             // Crea una copia de la lista.
@@ -104,8 +125,43 @@ public class ListaJugadores {
             }while(aux != inicio);
         }
     }
-    
-    public void generarGrafoTxt(){
+    public void grafoMano(String nombre){
+        // Verifica si la lista contiene elementoa.
+        NodoJugador nodoAux = buscarJugador(nombre);
+        if (!esVacia()&& nodoAux!=null) {
+            // Crea una copia de la lista.            
+            NodoLetra aux = nodoAux.manoJuego;
+            // Posicion de los elementos de la lista.
+            String grafoTxt = "";
+            int i = 0;
+            // Recorre la lista hasta llegar nuevamente al incio de la lista.
+            do{
+                grafoTxt = grafoTxt + i +"[label=\""+aux.letra +"\"];\n";                 
+                // Avanza al siguiente nodo.
+                aux = aux.nodoDer;
+                // Incrementa el contador de la posión.
+                i++;
+            }while(aux != null);
+            i=0;
+            aux = nodoAux.manoJuego;
+            grafoTxt = grafoTxt + nodoAux.nombre+ " -> " ;
+            do{
+                if(aux.nodoDer != null){
+                   //nodo = nodo + (idNodo++) +"[label=\""+letra +"\"];\n"; 
+                   grafoTxt = grafoTxt + i + " -> "; 
+                }else{
+                    grafoTxt = grafoTxt + i +"\n";
+                }  
+                // Avanza al siguiente nodo.
+                aux = aux.nodoDer;
+                // Incrementa el contador de la posión.
+                i++;
+            }while(aux != null);
+            System.out.println(grafoTxt);
+            GenerarImagen(grafoTxt, "grafoMano");
+        }
+    }
+    public void grafoJugador(){
            if (!esVacia()) {
             // Crea una copia de la lista.
             NodoJugador aux = inicio;
@@ -123,19 +179,18 @@ public class ListaJugadores {
                 i++;
             }while(aux != inicio);
             if(aux==inicio){
-                str = str  + aux.nombre +  " ;  ";
+                str = str  + aux.nombre ;
             }
-            System.out.print("Inicio" + str +"fin ");
-            GenerarImagen(str);
+            GenerarImagen(str,"grafoJugadores");
         }
         
     }
-     public void GenerarImagen(String nodos){
+     public void GenerarImagen(String nodos, String nombreImagen){
          String rutaArchivo;
          String rutaImagen;
          String texto= "digraph G{ \n " +nodos+"  \n }  " ;
-            rutaArchivo = "grafoJugadores.dot";
-            rutaImagen = "grafoJugadores.png";
+            rutaArchivo = nombreImagen +".dot";
+            rutaImagen = nombreImagen +".png";
          
          try {
         File archivo = new File(rutaArchivo);
@@ -150,8 +205,7 @@ public class ListaJugadores {
              }
         
         
-    }
-    
+    }    
     public void dibujar( String direccionDot, String direccionPng ,int opcion){
             try
             {       

@@ -1,0 +1,11 @@
+digraph G{ 
+ 0[label="T"];
+1[label="O"];
+2[label="R"];
+3[label="J"];
+4[label="Ñ"];
+5[label="X"];
+6[label="U"];
+luis -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6
+  
+ }  

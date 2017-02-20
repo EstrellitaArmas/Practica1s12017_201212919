@@ -5,7 +5,7 @@
  */
 package listacircularjugadores;
 
-import listasimplemano.NodoMano;
+import Listaletras.NodoLetra;
 
 
 /**
@@ -15,10 +15,12 @@ import listasimplemano.NodoMano;
 public class NodoJugador {
     NodoJugador nodoDer;
     String nombre;
-    NodoMano manoJuego;
+    int puntos;
+    public NodoLetra manoJuego;
     
     public NodoJugador(String nombre){
         this.nombre= nombre;
+        this.puntos = 0;
         this.nodoDer= null;
         this.manoJuego= null;
     }

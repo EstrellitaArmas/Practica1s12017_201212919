@@ -5,20 +5,34 @@
  */
 package matrizortogonal;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author estre
  */
 public class NodoOrtogonal {
-    public class Nodo {
-    Nodo nodoDer;
-    int dato;
+    
+    NodoOrtogonal nodoDer, nodoIzq, nodoArriba, nodoAbajo;
+    NodoCabeceras primeroX, primeroY;
+    
+    int x,y;
+    String letra;
+    JLabel lblLetra;
 
-    public Nodo(int dato) {
-        this.dato = dato;
+    public NodoOrtogonal(int x , int y, String letra , int dimension) {
+        this.x = x;
+        this.y = y;
+        this.letra = letra;
+        this.lblLetra = new JLabel(letra);
+        lblLetra.setLocation(((648/dimension)*x),((485/dimension)*y));
+        lblLetra.setVisible(true);        
+        this.nodoAbajo= null;
+        this.nodoArriba= null;
+        this.nodoIzq = null;
         this.nodoDer = null;
     }
 
 }
     
-}
+

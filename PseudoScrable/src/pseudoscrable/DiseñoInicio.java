@@ -5,7 +5,7 @@
  */
 package pseudoscrable;
 
-import java.awt.List;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,12 +22,10 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import listasimplediccionario.ListaPalabras;
 
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -41,7 +39,8 @@ public class DiseñoInicio extends javax.swing.JFrame {
             File archivo ; 
             
             DiseñoInicio2 diseñoInicio2= new DiseñoInicio2();  
-            ListaPalabras listaPalabras = new ListaPalabras();      
+            ListaPalabras listaPalabras = new ListaPalabras();    
+            
             Tablero tablero;
                     
     public DiseñoInicio() {
@@ -188,10 +187,16 @@ public class DiseñoInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAbrirArchivoActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
-        //listaPalabras.imprimir();
-         Tablero tablero = new Tablero (listaPalabras, diseñoInicio2.listaJugadores);
-         //diseñoInicio2.setVisible(false);
-         tablero.setVisible(true);
+        //listaPalabras.imprimir();    
+        listaPalabras.generarGrafoTxt();
+        diseñoInicio2.listaJugadores.grafoJugador();
+        
+        Tablero tablero = new Tablero (listaPalabras, diseñoInicio2.listaJugadores);
+        Reportes reportes = new Reportes();
+        reportes.setVisible(true);
+        tablero.setVisible(true);
+         Hilo hilo1 = new Hilo( "Hilo-1" , reportes);
+    hilo1.start();
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**

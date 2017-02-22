@@ -568,12 +568,12 @@ public class Tablero extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         MatrizOrtogonal tablero  = new MatrizOrtogonal();
         for(int i = 0 ; i<5 ; i++){
-            for(int j= 0; j<5 ; i++){
+            for(int j= 0; j<5 ; j++){
              tablero.insertar_nodo(i, j , "letra", 5 );   
             }
         }
         tablero.recorrer_matriz();
-       
+        tablero.GenerarImagen(tablero.crear_grafo());
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**

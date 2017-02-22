@@ -5,6 +5,11 @@
  */
 package matrizortogonal;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  *
  * @author estre
@@ -12,7 +17,9 @@ package matrizortogonal;
 public class MatrizOrtogonal {
      listaFilas fila = new listaFilas();   // nodo de las filas en y
     listaColumnas columna = new listaColumnas(); // nodo de las columnas en x
-
+    String grafoMatriz="";
+    int i=0;
+            
     public MatrizOrtogonal() {
     }
 
@@ -24,7 +31,7 @@ public class MatrizOrtogonal {
 
         NodoCabeceras nodoCabeceraY ;
         NodoCabeceras nodoCabeceraX ;
-
+        int i=0;
         // condicion que me dice que no existe ni la fila ni la columna
         if (fila.buscarY(y) == false && columna.buscarX(x) == false) {
             fila.insertarY(y);
@@ -42,6 +49,8 @@ public class MatrizOrtogonal {
                 nuevo.x=x;//columna x
 
             }
+            //node1 [label = "{<n> n14 | 719 |<p> }"]
+            grafoMatriz+= "node"+ (i++) + "[label = \"{<izq> |<a>"+ nuevo.letra + nuevo.x+ nuevo.y + "|<der> }\"];\n";
             System.out.println("Insertadas cabeceras"+nuevo.letra + nuevo.x+ nuevo.y);
         } //si existe ya la fila pero la columna no
         else if (fila.buscarY(y) == true && columna.buscarX(x) == false) {
@@ -51,7 +60,7 @@ public class MatrizOrtogonal {
             nodoCabeceraY = fila.returnNodoY(y);
 
             aux = nodoCabeceraY.derecha_primero;
-            if (aux.nodoDer == null && aux.x < x) {
+            if (aux.nodoDer == null && aux.x < x) { //inserta primer nodo de la fila existente 
                 aux.nodoDer= nuevo;
                 nuevo.nodoIzq= aux;
                 nuevo.primeroX= nodoCabeceraX;
@@ -114,79 +123,80 @@ public class MatrizOrtogonal {
 
                 }
             }
+            grafoMatriz+= "node"+ (i++) + "[label = \"{<izq> |<a>"+ nuevo.letra + nuevo.x+ nuevo.y + "|<der> }\"];\n";
             System.out.println("Insertado"+nuevo.letra + nuevo.x+"--"+ nuevo.y);
-        } /*// si existe la columna pero no la fila
+        } //si existe la columna pero no la fila
         else if (fila.buscarY(y) == false && columna.buscarX(x)) {
             fila.insertarY(y);
 
-            nodoX = columna.returnNodoX(x);
-            nodoY = fila.returnNodoY(y);
+            nodoCabeceraX = columna.returnNodoX(x);
+            nodoCabeceraY = fila.returnNodoY(y);
 
-            aux = nodoX.getAbajo_primero();
+            aux = nodoCabeceraX.abajo_primero;
 
-            if (aux.getAbajo() == null && aux.getFila() < y) {
-                aux.setAbajo(nuevo);
-                nuevo.setArriba(aux);
+            if (aux.nodoAbajo == null && aux.y < y) {
+                aux.nodoAbajo= nuevo;
+                nuevo.nodoArriba= aux;
 
-                nuevo.setPrimero_Y(nodoY);
-                nodoY.setDerecha_primero(nuevo);
-                nuevo.setFila(y);
-                nuevo.setColumna(x);
-            } else if (aux.getArriba() == null && aux.getFila() > y) {
-                nodoX.setAbajo_primero(nuevo);
-                nodoY.setDerecha_primero(nuevo);
+                nuevo.primeroY= (nodoCabeceraY);
+                nodoCabeceraY.derecha_primero= nuevo;
+                nuevo.y = y;
+                nuevo.x = x;
+                
+            } else if (aux.nodoArriba == null && aux.y > y) {
+                nodoCabeceraX.abajo_primero= nuevo;
+                nodoCabeceraY.derecha_primero= nuevo;
 
-                nuevo.setPrimero_X(nodoX);
-                nuevo.setPrimero_Y(nodoY);
+                nuevo.primeroX= nodoCabeceraX;
+                nuevo.primeroY= nodoCabeceraY;
 
-                aux.setArriba(nuevo);
-                nuevo.setAbajo(aux);
-                nuevo.setFila(y);
-                nuevo.setColumna(x);
-
+                aux.nodoArriba= nuevo;
+                nuevo.nodoAbajo= aux;
+                nuevo.y = y;
+                nuevo.x = x;
             } else {
-                if (y < aux.getFila()) {
-                    aux.setArriba(nuevo);
-                    nuevo.setAbajo(aux);
+                if (y < aux.y) {
+                    aux.nodoArriba= nuevo;
+                    nuevo.nodoAbajo= aux;
 
-                    nodoY.setDerecha_primero(nuevo);
-                    nuevo.setPrimero_Y(nodoY);
+                    nodoCabeceraY.derecha_primero= nuevo;
+                    nuevo.primeroY= nodoCabeceraY;
 
-                    nodoX.setAbajo_primero(nuevo);
-                    nuevo.setPrimero_X(nodoX);
+                    nodoCabeceraX.abajo_primero= nuevo;
+                    nuevo.primeroX= nodoCabeceraX;
 
-                    nuevo.setFila(y);
-                    nuevo.setColumna(x);
-
-                }
-                while (aux.getAbajo() != null && aux.getFila() < y) {
-                    aux = aux.getAbajo();
+                    nuevo.y = y;
+                    nuevo.x = x;
 
                 }
-                if (aux.getAbajo() == null && aux.getFila() < y) {
-                    aux.setAbajo(nuevo);
-                    nuevo.setArriba(aux);
+                while (aux.nodoAbajo != null && aux.y < y) {
+                    aux = aux.nodoAbajo;
 
-                    nuevo.setPrimero_Y(nodoY);
-                    nodoY.setDerecha_primero(nuevo);
+                }
+                if (aux.nodoAbajo == null && aux.y < y) {
+                    aux.nodoAbajo=(nuevo);
+                    nuevo.nodoArriba= aux;
 
-                    nuevo.setFila(y);
-                    nuevo.setColumna(x);
+                    nuevo.primeroY=nodoCabeceraY;
+                    nodoCabeceraY.derecha_primero= nuevo;
+
+                    nuevo.y = y;
+                    nuevo.x = x;
                 } else {
-                    aux.getArriba().setAbajo(nuevo);
-                    nuevo.setArriba(aux.getArriba());
-                    nuevo.setAbajo(aux);
-                    aux.setArriba(nuevo);
+                    aux.nodoArriba.nodoAbajo= nuevo;
+                    nuevo.nodoArriba= aux.nodoArriba;
+                    nuevo.nodoAbajo= aux;
+                    aux.nodoArriba= nuevo;
 
-                    nuevo.setPrimero_Y(nodoY);
-                    nodoY.setDerecha_primero(nuevo);
+                    nuevo.primeroY= nodoCabeceraY;
+                    nodoCabeceraY.derecha_primero= nuevo;
 
-                    nuevo.setFila(y);
-                    nuevo.setColumna(x);
+                    nuevo.y = y;
+                    nuevo.x = x;
                 }
 
             }
-
+            grafoMatriz+= "node"+ (i++) + "[label = \"{<izq> |<a>"+ nuevo.letra + nuevo.x+ nuevo.y + "|<der> }\"];\n";
         } //si existe la columna y la fila*/
         else if (fila.buscarY(y) == true && columna.buscarX(x) == true) {
 
@@ -285,10 +295,12 @@ public class MatrizOrtogonal {
 
                 }
             }
+            grafoMatriz+= "node"+ (i++) + "[label = \"{<izq> |<a>"+ nuevo.letra + nuevo.x+ nuevo.y + "|<der> }\"];\n";
             System.out.println("Insertado"+nuevo.letra +" "+ nuevo.x+"--" + nuevo.y);
         }
         
     }
+   
      public void recorrer_matriz() {
         NodoCabeceras actual_y;
         NodoOrtogonal actual;
@@ -304,4 +316,121 @@ public class MatrizOrtogonal {
         }
 
     }
+     
+     public String crear_grafo() {
+        
+        NodoCabeceras fila_Y ;
+        NodoOrtogonal actual;
+        int i=0;        
+        String apuntador = "";
+        try {               
+                // recorre mi matriz  
+                int contador = 0;
+                fila_Y = fila.cabeza;   
+                
+                while (fila_Y != null) {
+                    if (contador == 0) {                        
+                        actual = fila_Y.derecha_primero;
+                          
+                        while (actual.nodoDer != null) {                       
+
+                            actual = actual.nodoDer;                       
+                           
+                            apuntador += "\" X: " + actual.nodoIzq.x + " Y: " + actual.nodoIzq.y + "\"";
+                            apuntador +=  "-> \" X: " + actual.x + " Y: " + actual.y + "\";\n";
+                            
+                            apuntador += "\" X: " + actual.x + " Y: " + actual.y + "\"";
+                            apuntador += "-> \" X: " + actual.nodoIzq.x + " Y: " + actual.nodoIzq.y + "\";\n\n";
+                            
+                        }  
+                        
+                        fila_Y = fila_Y.siguiente;
+                        contador++;
+                    } // contador = 1
+                    else {
+                        actual = fila_Y.derecha_primero;
+                       
+                        while (actual.nodoDer != null) {
+                            actual = actual.nodoDer;
+                            if (actual.nodoIzq != null) {
+                                apuntador = apuntador + "\" X: " + actual.nodoIzq.x + " Y: " + actual.nodoIzq.y + "\"";
+                                apuntador = apuntador + "->  \" X: " + actual.x + " Y: " + actual.y + "\";\n";
+                                apuntador = apuntador + "\" X: " + actual.x + " Y: " + actual.y + "\"";
+                                apuntador = apuntador + "-> \" X: " + actual.nodoIzq.x + " Y: " + actual.nodoIzq.y + "\";\n\n";
+                            }
+
+                            if (actual.nodoArriba != null) {
+                                apuntador = apuntador + "\" X: " + actual.x + " Y: " + actual.y + "\"";
+                                apuntador = apuntador + "-> \" X: " + actual.nodoArriba.x + " Y: " + actual.nodoArriba.y + "\";\n";
+                                apuntador = apuntador + "\" X: " + actual.nodoArriba.x + " Y: " + actual.nodoArriba.y + "\"";
+                                apuntador = apuntador + "-> \" X: " + actual.x + " Y: " + actual.y + "\";\n\n";
+                            }
+                        }
+                        
+                      /* if (actual.nodoArriba != null) {
+                                apuntador = apuntador + "\" X: " + actual.x + " Y: " + actual.y + "\"";
+                                apuntador = apuntador + "-> \" X: " + actual.nodoArriba.x + " Y: " + actual.nodoArriba.y + "\";\n";
+                                apuntador = apuntador + "\" X: " + actual.nodoArriba.x + " Y: " + actual.nodoArriba.y + "\"";
+                                apuntador = apuntador + "-> \" X: " + actual.x + " Y: " + actual.y + "\";\n\n";
+                        }*/
+                        fila_Y = fila_Y.siguiente;
+
+                    }
+
+                }
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+        }
+        return apuntador;
+    }
+     public void GenerarImagen(String nodos){
+         
+         String rutaArchivo;
+         String rutaImagen;
+         String texto= "digraph G{ \n node [shape=box, fontsize=16]; \n" +nodos+"  \n }  " ;
+            rutaArchivo = "grafoMatriz.dot";
+            rutaImagen = "grafoMatriz.png";
+         
+         try {
+        File archivo = new File(rutaArchivo);
+        BufferedWriter bw;
+        bw = new BufferedWriter(new FileWriter(archivo));
+        bw.write(texto); 
+        bw.close();
+            dibujar(rutaArchivo, rutaImagen,1);
+         
+        } catch (IOException ex) {
+                 System.out.println("Error>> "+ex.getMessage());
+             }
+        
+        
+    }
+    
+    public void dibujar( String direccionDot, String direccionPng ,int opcion){
+            try
+            {       
+                File archivo = new File(direccionPng);
+                ProcessBuilder pbuilder;
+                
+                if (opcion==1){
+                    pbuilder = new ProcessBuilder( "dot", "-Tpng", "-o", direccionPng, direccionDot );
+                
+                }else{
+                     pbuilder = new ProcessBuilder( "dot","-Kfdp","-n","-Tpng", "-o", direccionPng, direccionDot );             
+                }
+                
+                pbuilder.redirectErrorStream( true );
+                //Ejecuta el proceso
+                pbuilder.start();
+                System.out.println("\nGrafica  creada con exito");
+                //String[] command = {"cmd","/c","start","Visualizador de fotos de Windows",  archivo.getAbsolutePath() };
+                //Process process = Runtime.getRuntime().exec(command);
+               
+            } catch (Exception e) {
+                e.printStackTrace(); 
+            }
+	}
 }
